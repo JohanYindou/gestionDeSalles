@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{ path('app_home') }}">
+			<img src="./../../assets/media/RoomManagerLogo.png" alt="Logo" width="30" height="24">
+		</a>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul
+				class="navbar-nav">
+				{# rajouter la classe active et l'attribut aria-current pour le lien actif #}
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="#">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Rooms</a>
+				</li>
+				<li class="nav-item">
+					<div class="d-flex gap-4">
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							{# LIEN VERS MON PROFIL + DÉCONNEXION #}
+							<a class="d-flex align-items-center gap-2" href="{{ path('app_profile') }}">
+								<img class="img-fluid rounded-circle" src="{{ app.user.getProfilePicture() }}" alt=""/>
+								<span class="text-sm font-weight-bold">{{ app.user.getUsername() }}</span>
+							</a>
+							<a href="{{ path('app_logout') }}" class="nav-link text-sm font-weight-bold">Logout</a>
+						{% else %}
+							{# LIEN DE CONNEXION + INSCRIPTION #}
+							<a href="{{ path('app_login') }}" class="nav-link text-sm font-weight-bold">Login</a>
+							<a href="{{ path('app_register') }}" class="nav-link text-sm font-weight-bold">Register</a>
+						{% endif %}
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
