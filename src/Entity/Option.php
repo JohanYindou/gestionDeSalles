@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\OptionsRepository;
+use App\Repository\OptionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OptionsRepository::class)]
-class Options
+#[ORM\Entity(repositoryClass: OptionRepository::class)]
+class Option
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -31,15 +31,15 @@ class Options
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: rooms::class, inversedBy: 'options')]
-    private Collection $rooms;
+    #[ORM\ManyToMany(targetEntity: Room::class, inversedBy: 'options')]
+    private Collection $room_id;
 
     public function __construct()
     {
-        $this->rooms = new ArrayCollection();
+        $this->room_id = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,7 +112,7 @@ class Options
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
 
@@ -120,25 +120,25 @@ class Options
     }
 
     /**
-     * @return Collection<int, rooms>
+     * @return Collection<int, Room>
      */
-    public function getRooms(): Collection
+    public function getRoomId(): Collection
     {
-        return $this->rooms;
+        return $this->room_id;
     }
 
-    public function addRoom(rooms $room): static
+    public function addRoomId(Room $roomId): static
     {
-        if (!$this->rooms->contains($room)) {
-            $this->rooms->add($room);
+        if (!$this->room_id->contains($roomId)) {
+            $this->room_id->add($roomId);
         }
 
         return $this;
     }
 
-    public function removeRoom(rooms $room): static
+    public function removeRoomId(Room $roomId): static
     {
-        $this->rooms->removeElement($room);
+        $this->room_id->removeElement($roomId);
 
         return $this;
     }

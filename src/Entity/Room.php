@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\RoomsRepository;
+use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RoomsRepository::class)]
-class Rooms
+#[ORM\Entity(repositoryClass: RoomRepository::class)]
+class Room
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,7 +20,7 @@ class Rooms
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $floor = null;
+    private ?string $etage = null;
 
     #[ORM\Column]
     private ?int $capacity = null;
@@ -43,13 +43,13 @@ class Rooms
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\OneToMany(targetEntity: Bookings::class, mappedBy: 'room_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'room_id')]
     private Collection $bookings;
 
-    #[ORM\ManyToMany(targetEntity: Options::class, mappedBy: 'rooms')]
+    #[ORM\ManyToMany(targetEntity: Option::class, mappedBy: 'room_id')]
     private Collection $options;
 
     public function __construct()
@@ -57,6 +57,8 @@ class Rooms
         $this->bookings = new ArrayCollection();
         $this->options = new ArrayCollection();
     }
+
+
 
     public function getId(): ?int
     {
@@ -75,14 +77,14 @@ class Rooms
         return $this;
     }
 
-    public function getFloor(): ?string
+    public function getEtage(): ?string
     {
-        return $this->floor;
+        return $this->etage;
     }
 
-    public function setFloor(string $floor): static
+    public function setEtage(string $etage): static
     {
-        $this->floor = $floor;
+        $this->etage = $etage;
 
         return $this;
     }
@@ -176,7 +178,7 @@ class Rooms
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): static
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
     {
         $this->updated_at = $updated_at;
 
@@ -184,29 +186,29 @@ class Rooms
     }
 
     /**
-     * @return Collection<int, Bookings>
+     * @return Collection<int, Booking>
      */
     public function getBookings(): Collection
     {
         return $this->bookings;
     }
 
-    public function addBooking(Bookings $booking): static
+    public function addBooking(Booking $booking): static
     {
         if (!$this->bookings->contains($booking)) {
             $this->bookings->add($booking);
-            $booking->setRoomId($this);
+            $booking->setRoom_id($this);
         }
 
         return $this;
     }
 
-    public function removeBooking(Bookings $booking): static
+    public function removeBooking(Booking $booking): static
     {
         if ($this->bookings->removeElement($booking)) {
             // set the owning side to null (unless already changed)
-            if ($booking->getRoomId() === $this) {
-                $booking->setRoomId(null);
+            if ($booking->getRoom_id() === $this) {
+                $booking->setRoom_id(null);
             }
         }
 
@@ -214,29 +216,30 @@ class Rooms
     }
 
     /**
-     * @return Collection<int, Options>
+     * @return Collection<int, Option>
      */
     public function getOptions(): Collection
     {
         return $this->options;
     }
 
-    public function addOption(Options $option): static
+    public function addOption(Option $option): static
     {
         if (!$this->options->contains($option)) {
             $this->options->add($option);
-            $option->addRoom($this);
+            $option->addRoomId($this);
         }
 
         return $this;
     }
 
-    public function removeOption(Options $option): static
+    public function removeOption(Option $option): static
     {
         if ($this->options->removeElement($option)) {
-            $option->removeRoom($this);
+            $option->removeRoomId($this);
         }
 
         return $this;
     }
+
 }
