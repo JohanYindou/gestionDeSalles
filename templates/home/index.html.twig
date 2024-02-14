@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
+			{# {% for picture in pictures %} #}
+				<div class="col">
+					<div class="card text-center p-2">
+						{# <a href="{{ path('app_picture', {'id': image.id}) }}">
+							<img src="{{ image.path }}" class="card-img-top" alt="{{ image.title }}">
+						</a> #}
+                        Image
+						<div class="card-body">
+							<h5 class="card-title">Titre</h5>
+							<div class="card-text">
+								Description coupé.
+							</div>
+						</div>
+					</div>
+				</div>
+			{# {% endfor %} #}
+		</div>
+	</div>
+{% endblock %}
+
+
