@@ -54,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'user_id', orphanRemoval: true)]
     private Collection $bookings;
 
+    #[ORM\Column(length: 255)]
+    private ?string $picture = '/uploads/users/default.png';
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -239,6 +242,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $booking->setUserId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }

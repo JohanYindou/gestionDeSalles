@@ -55,6 +55,9 @@ class Room
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
+    #[ORM\Column(length: 100)]
+    private ?string $name = 'default';
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -253,6 +256,18 @@ class Room
     public function setPicture(string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): static
+    {
+        $this->name = $name;
 
         return $this;
     }
