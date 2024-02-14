@@ -5,8 +5,8 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\Room;
 use App\Entity\User;
-use App\Entity\Option;
 use App\Entity\Booking;
+use App\Entity\Features;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -22,7 +22,7 @@ class AppFixtures extends Fixture
             ->setRoles(['ROLE_ADMIN'])
             ->setFirstname('Admin')
             ->setLastname('Martin')
-            ->setAdress($faker->adress)
+            ->setAddress($faker->address)
             ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
             ->setPicture('logo.png')
             ->setPhone('06.45.45.45.45')
@@ -30,14 +30,14 @@ class AppFixtures extends Fixture
         $manager->persist($admin);
 
         // Set visitor
-        $visitor = [];
+        $visitors = [];
         for ($i = 0; $i < 8; $i++) {
             $visitor = new User();
             $visitor->setEmail('visitor' . $i . '@visitor.fr')
                 ->setRoles(['ROLE_USER'])
                 ->setFirstname($faker->firstName)
                 ->setLastname($faker->lastName)
-                ->setAdress($faker->adress)
+                ->setAddress($faker->address)
                 ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
                 ->setPicture('logo.png')
                 ->setPhone('06.45.45.45.45')
@@ -46,35 +46,34 @@ class AppFixtures extends Fixture
             array_push($visitors, $visitor);
         }
 
-        // Set options
-        $options = ['lumière du jour', 'lumière artificiel', 'accès PMR', 'logiciel', 'équipement',];
-        $optionArray = [];
-        for ($i = 0; $i < count($options); $i++) {
-            $option = new Option();
-            $option->setName($options[$i]);
-            $option->setDescription($options[$i]);
-            $option->setType($options[$i]);
-            $option->setState($options[$i]);
-            $option->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
-            $option->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
-            $manager->persist($option);
-            array_push($optionArray, $option);
+        // Set Features
+        $features = ['lumiere du jour', 'lumiere artificiel', 'acces PMR', 'logiciel', 'equipement',];
+        $featureArray = [];
+        for ($i = 0; $i < count($features); $i++) {
+            $feature = new Features();
+            $feature->setName($features[$i]);
+            $feature->setDescription($faker->sentence(30));
+            $feature->setType($features[$i]);
+            $feature->setState($faker->boolean);
+            $feature->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $feature->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $manager->persist($feature);
+            array_push($featureArray, $feature);
         }
 
         // Set rooms
-        $room = new Room();
         for ($i = 0; $i < 100; $i++) {
-
+            $room = new Room();
             $room
                 ->setName('Salle')
                 ->setEtage('0')
-                ->setCapacity('100')
+                ->setCapacity(100)
                 ->setAddress($faker->address)
                 ->setCountry('France')
                 ->setStatus('Disponible')
                 ->setCity('Cergy')
                 ->setPicture('logo.png')
-                ->addOption($faker->randomElement($optionArray))
+                ->addFeature($faker->randomElement($featureArray))
                 ->setDescription($faker->paragraphs(3, true))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
                 ->setPrice($faker->numberBetween(150, 1500))

@@ -49,19 +49,19 @@ class Room
     #[ORM\OneToMany(targetEntity: Booking::class, mappedBy: 'room_id')]
     private Collection $bookings;
 
-    #[ORM\ManyToMany(targetEntity: Option::class, mappedBy: 'room_id')]
-    private Collection $options;
-
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
     #[ORM\Column(length: 100)]
     private ?string $name = 'default';
 
+    #[ORM\ManyToMany(targetEntity: Features::class, mappedBy: 'room_id')]
+    private Collection $features;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
-        $this->options = new ArrayCollection();
+        $this->features = new ArrayCollection();
     }
 
 
@@ -221,33 +221,6 @@ class Room
         return $this;
     }
 
-    /**
-     * @return Collection<int, Option>
-     */
-    public function getOptions(): Collection
-    {
-        return $this->options;
-    }
-
-    public function addOption(Option $option): static
-    {
-        if (!$this->options->contains($option)) {
-            $this->options->add($option);
-            $option->addRoomId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOption(Option $option): static
-    {
-        if ($this->options->removeElement($option)) {
-            $option->removeRoomId($this);
-        }
-
-        return $this;
-    }
-
     public function getPicture(): ?string
     {
         return $this->picture;
@@ -268,6 +241,33 @@ class Room
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Features>
+     */
+    public function getFeatures(): Collection
+    {
+        return $this->features;
+    }
+
+    public function addFeature(Features $feature): static
+    {
+        if (!$this->features->contains($feature)) {
+            $this->features->add($feature);
+            $feature->addRoomId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeature(Features $feature): static
+    {
+        if ($this->features->removeElement($feature)) {
+            $feature->removeRoomId($this);
+        }
 
         return $this;
     }
