@@ -16,21 +16,7 @@ class HomeController extends AbstractController
     {
         $rooms = $roomRepository->findAll();
         return $this->render('home/index.html.twig', [
-<<<<<<< HEAD
-          
-        ]);
-    }
-    // test Route for designing the confirmation  email
-    #[Route('/email', name: 'email')]
-    public function email(): Response
-    {
-        return $this->render('registration/confirmation_email.html.twig', [
-            'signedUrl' => 'https://example.com/signed-url',
-            
-          
-=======
             'rooms' => $rooms,
->>>>>>> f94135be144b72297d91c989098705b3890aadcf
         ]);
     }
 }
