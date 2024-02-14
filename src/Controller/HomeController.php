@@ -12,7 +12,17 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+          
+        ]);
+    }
+    // test Route for designing the confirmation  email
+    #[Route('/email', name: 'email')]
+    public function email(): Response
+    {
+        return $this->render('registration/confirmation_email.html.twig', [
+            'signedUrl' => 'https://example.com/signed-url',
+            
+          
         ]);
     }
 }
