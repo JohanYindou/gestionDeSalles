@@ -5,22 +5,33 @@
 			<img src="/images/logo.png" alt="Logo" width="72" height="48">
 		</a>
 		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ms-auto">
+			<ul
+				class="navbar-nav ms-auto">
 				{# rajouter la classe active et l'attribut aria-current pour le lien actif #}
 				<li class="nav-item">
 					<a class="nav-link active" aria-current="page" href="#">Home</a>
 				</li>
 				<li class="nav-item me-3">
-					<a class="nav-link " href="#">Rooms</a>
+					<a class="nav-link " href="/room">Rooms</a>
 				</li>
-				
+
 				<li class="nav-item me-3">
-					<div class="d-flex gap-4"> 
-						{# Ne pas oublie de rajouter les boutons pour se conecter et le profil  si connecté !/ #}
+					<div class="d-flex gap-4">
 						{# Attendre la création des utilisateurs avant d'ajouter ces boutons  #}
-					</div>
+						{# 
+						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+							<a class="d-flex align-items-center gap-2" href="{{ path('app_profile') }}"> 
+								<img class="img-fluid rounded-circle" src="{{ app.user.getPicture() }}" alt=""/>
+								<span class="text-sm font-weight-bold">{{ app.user.getgetFirstname() }}</span>
+							</a>
+							<a href="{{ path('app_logout') }}" class="nav-link text-sm font-weight-bold">Logout</a>
+						{% else %}
+							<a href="{{ path('app_login') }}" class="nav-link text-sm font-weight-bold">Login</a>
+							<a href="{{ path('app_register') }}" class="nav-link text-sm font-weight-bold">Register</a>
+						{% endif %}
+						#}
 				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+			</div>
+		</li>
+	</ul>
+</div></div></nav>
