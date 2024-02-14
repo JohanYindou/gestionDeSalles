@@ -28,7 +28,7 @@ class ProfilType extends AbstractType
             ->add('phone', null, [
                 'required' => false
             ])
-            ->add('adress', null, [
+            ->add('address', null, [
                 'required' => false
             ])
             ->add('save', SubmitType::class);

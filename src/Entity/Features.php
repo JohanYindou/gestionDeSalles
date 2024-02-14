@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\OptionRepository;
+use App\Repository\FeaturesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: OptionRepository::class)]
-class Option
+#[ORM\Entity(repositoryClass: FeaturesRepository::class)]
+class Features
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +34,7 @@ class Option
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $updated_at = null;
 
-    #[ORM\ManyToMany(targetEntity: Room::class, inversedBy: 'options')]
+    #[ORM\ManyToMany(targetEntity: Room::class, inversedBy: 'features')]
     private Collection $room_id;
 
     public function __construct()
