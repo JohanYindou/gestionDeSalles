@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "967d365d39d12608c373341ea2a26174",
-=======
     "content-hash": "a069f7ec17401e892a03d54f8f43fb9d",
->>>>>>> 666afc4f2491e0971d2c7950456b66d44a83f347
     "packages": [
         {
             "name": "composer/semver",
@@ -1435,8 +1431,6 @@
             "time": "2024-01-02T13:46:09+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "knplabs/knp-components",
             "version": "v4.3.0",
             "source": {
@@ -1597,7 +1591,6 @@
             "time": "2023-11-19T08:15:37+00:00"
         },
         {
->>>>>>> 666afc4f2491e0971d2c7950456b66d44a83f347
             "name": "monolog/monolog",
             "version": "3.5.0",
             "source": {
