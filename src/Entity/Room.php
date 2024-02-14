@@ -52,6 +52,9 @@ class Room
     #[ORM\ManyToMany(targetEntity: Option::class, mappedBy: 'room_id')]
     private Collection $options;
 
+    #[ORM\Column(length: 255)]
+    private ?string $picture = null;
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -238,6 +241,18 @@ class Room
         if ($this->options->removeElement($option)) {
             $option->removeRoomId($this);
         }
+
+        return $this;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(string $picture): static
+    {
+        $this->picture = $picture;
 
         return $this;
     }
