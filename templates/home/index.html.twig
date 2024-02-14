@@ -1,18 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/jyind/Documents/Projets/gestionDeSalles/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/jyind/Documents/Projets/gestionDeSalles/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+{% block title %}
+	Home
 {% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
+			{# {% for picture in pictures %} #}
+				<div class="col">
+					<div class="card text-center p-2">
+						{# <a href="{{ path('app_picture', {'id': image.id}) }}">
+							<img src="{{ image.path }}" class="card-img-top" alt="{{ image.title }}">
+						</a> #}
+                        Image
+						<div class="card-body">
+							<h5 class="card-title">Titre</h5>
+							<div class="card-text">
+								Description coupé.
+							</div>
+						</div>
+					</div>
+				</div>
+			{# {% endfor %} #}
+		</div>
+	</div>
+{% endblock %}
+
+
