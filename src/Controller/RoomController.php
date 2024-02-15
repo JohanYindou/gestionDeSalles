@@ -10,6 +10,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class RoomController extends AbstractController
@@ -18,39 +19,54 @@ class RoomController extends AbstractController
     public function index(
         Request $request,
         RoomRepository $roomRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
+
+        // Récupérer l'utilisateur actuellement connecté
+        $currentUser = $this->getUser();
+
+        // Vérifier si l'utilisateur est authentifié
+        if (!$currentUser) {
+            throw $this->createNotFoundException('Utilisateur non connecté');
+        }
+
         $room = $roomRepository->findOneBy(
             ['id' => $request->attributes->get('id')],
         );
-
         if (!$room) {
             throw $this->createNotFoundException('Room not found');
         }
 
-        // $booking = new Booking();
-        // $bookingForm = $this->createForm(BookingType::class, $booking);
-        // $bookingForm->handleRequest($request);
+        $booking = new Booking();
+        $booking->setRoom_id($room); // Définir la salle pour la réservation
+        $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
+        $booking->setStartDate(new \DateTime($request->request->get('start_date'))); // Récupérer la date de début du formulaire
+        $booking->setEndDate(new \DateTime($request->request->get('end_date'))); // Récupérer la date de fin du formulaire
+        $booking->setAmount($room->getPrice()); // Définir le prix de la salle
+        $booking->setState(false); // Définir l'état de la reservation
+        $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
+        $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
 
-        // if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-        //     if (!$this->getUser()) {
-        //         return $this->redirectToRoute('app_login');
-        //     }
+        // Création du formulaire de réservation
+        $bookingForm = $this->createForm(BookingType::class, $booking);
+        $bookingForm->handleRequest($request);
 
-        //     $booking = $bookingForm->getData();
-        //     $booking->setStartDate($bookingForm->get('startDate')->getData());
-        //     $booking->setEndDate($bookingForm->get('endDate')->getData());
-        //     $booking->setUser($this->getUser());
-        //     $booking->setRoom($room);
-        //     $entityManager->persist($booking);
-        //     $entityManager->flush();
-        // }
+        if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
+            // Traitement du formulaire si soumis et valide
+            // Par exemple, enregistrement de la réservation dans la base de données
+            $entityManager->persist($booking);
+            $entityManager->flush();
 
-        
+            // Affichage du message de réservation effectuée
+            $this->addFlash('success', 'Réservation effectuée avec succès !');
+            sleep(5);
+            return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+        }
+
 
         return $this->render('room/index.html.twig', [
             'room' => $room,
-            // 'bookingForm' => $bookingForm->createView(),
+            'bookingForm' => $bookingForm->createView(),
         ]);
     }
 
@@ -60,14 +76,14 @@ class RoomController extends AbstractController
         Request $request,
         RoomRepository $roomRepository,
         PaginatorInterface $paginator
-        ): Response
-    {
+    ): Response {
         $rooms = $paginator->paginate(
             $rooms = $roomRepository->findAll(),
-            $request->query->getInt('page', 1),9
+            $request->query->getInt('page', 1),
+            9
 
         );
-        
+
         return $this->render('room/rooms.html.twig', [
             'rooms' => $rooms,
             'featuresRooms' => $roomRepository->findAll(),
