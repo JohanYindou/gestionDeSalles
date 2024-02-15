@@ -100,8 +100,11 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 100; $i++) {
             $room = new Room();
+            $words = $faker->words($nb = 3, $asText = false);
+            $words[0] = ucfirst($words[0]); // Capitalize the first word
+
             $room
-                ->setName(implode(' ', $faker->words($nb = 3, $asText = false)))
+                ->setName(implode(' ', $words))
                 ->setEtage($faker->numberBetween(-1, 5))
                 ->setCapacity($faker->numberBetween(1, 100))
                 ->setAddress($faker->streetAddress)
