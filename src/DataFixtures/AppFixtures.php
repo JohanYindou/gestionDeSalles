@@ -25,7 +25,7 @@ class AppFixtures extends Fixture
             ->setAddress($faker->address)
             ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
             ->setPicture($faker->randomElement($picturePaths))
-            ->setPhone('06.45.45.45.45')
+            ->setPhone($faker->phoneNumber)
             ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
         $manager->persist($admin);
 
@@ -43,14 +43,16 @@ class AppFixtures extends Fixture
             ->setAddress($faker->address)
             ->setPicture($faker->randomElement($picturePaths))
             ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
-            ->setPhone('06.45.45.45.45')
+            ->setPhone($faker->phoneNumber)
             ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
             $manager->persist($visitor);
             array_push($visitors, $visitor);
         }
 
         // Set Features
-        $features = ['lumiere du jour', 'lumiere artificiel', 'acces PMR', 'logiciel', 'equipement',];
+
+        //Ergonomie
+        $features = ['lumiere du jour', 'lumiere artificiel', 'acces PMR'];
         $featureArray = [];
         for ($i = 0; $i < count($features); $i++) {
             $feature = new Features();
@@ -64,20 +66,51 @@ class AppFixtures extends Fixture
             array_push($featureArray, $feature);
         }
 
-        // Set rooms
+        // Logiciels
+        $logiciels = ['VsCode', 'Pack Office', 'Pack Adobe Creative Cloud'];
+        $type = ['logiciel', 'equipement'];      
+        for ($i = 0; $i < count($logiciels); $i++) {
+            $logiciel = new Features();
+            $logiciel->setName($logiciels[$i]);
+            $logiciel->setDescription($faker->sentence(30));
+            $logiciel->setType($type[0]);
+            $logiciel->setState($faker->boolean);
+            $logiciel->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $logiciel->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $manager->persist($logiciel);
+            array_push($featureArray, $logiciel);
+        }
+
+        // Materiels
+        $materiels = ['PC', 'Tableau', 'Projecteur', 'Caméra', 'Internet'];
+        for ($i = 0; $i < count($materiels); $i++) {
+            $materiel = new Features();
+            $materiel->setName($materiels[$i]);
+            $materiel->setDescription($faker->sentence(30));
+            $materiel->setType($type[1]);
+            $materiel->setState($faker->boolean);
+            $materiel->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $materiel->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $manager->persist($materiel);
+            array_push($featureArray, $materiel);
+        }
+
         // Set rooms
         $rooms = []; // Variable pour stocker les chambres
 
         for ($i = 0; $i < 100; $i++) {
             $room = new Room();
+            $words = $faker->words($nb = 3, $asText = false);
+            $words[0] = ucfirst($words[0]); // Capitalize the first word
+
             $room
-                ->setName('Salle')
-                ->setEtage('0')
-                ->setCapacity(100)
-                ->setAddress($faker->address)
-                ->setCountry('France')
+                ->setName(implode(' ', $words))
+                ->setEtage($faker->numberBetween(-1, 5))
+                ->setCapacity($faker->numberBetween(1, 100))
+                ->setAddress($faker->streetAddress)
+                ->setCountry($faker->country())
                 ->setStatus('Disponible')
-                ->setCity('Cergy')
+                ->setCity($faker->city())
                 ->addFeature($faker->randomElement($featureArray))
                 ->setDescription($faker->paragraphs(3, true))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
@@ -89,6 +122,7 @@ class AppFixtures extends Fixture
         }
 
 
+        $status= ['Non Payé', 'Payé'];
         // Créer des booking
         foreach ($visitors as $visitor) {
             for ($i = 0; $i < 3; $i++) {
@@ -103,8 +137,9 @@ class AppFixtures extends Fixture
                 $booking->setStartDate($startDate)
                     ->setEndDate($endDate)
                     ->setAmount($faker->numberBetween(150, 1500))
-                    ->setStatus('Non payé')
-                    ->setState(false)
+                    ->setState($faker->boolean)
+                    // Si le state est à false, le booking est non payé sinon il aléatoire entre payé et non payé 
+                    ->setStatus($booking->isState() ? $status[array_rand($status)] : 'Non Payé')
                     ->setRoom_id($randomRoom)
                     ->setUserId($visitor)
                     ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
