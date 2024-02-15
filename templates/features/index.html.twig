@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Features index{% endblock %}
+
+{% block body %}
+    <h1>Features index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>State</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for feature in features %}
+            <tr>
+                <td>{{ feature.id }}</td>
+                <td>{{ feature.name }}</td>
+                <td>{{ feature.description }}</td>
+                <td>{{ feature.type }}</td>
+                <td>{{ feature.state ? 'Yes' : 'No' }}</td>
+                <td>{{ feature.createdAt ? feature.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ feature.updatedAt ? feature.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_features_show', {'id': feature.id}) }}">show</a>
+                    <a href="{{ path('app_features_edit', {'id': feature.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_features_new') }}">Create new</a>
+{% endblock %}
