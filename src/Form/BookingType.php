@@ -13,21 +13,22 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('startDate', DateType::class, [
+            ->add('start_date', DateType::class, [
                 'label' => 'Date de début :',
+                'required' => true,
                 'attr' => [
                     'class' => 'ms-2 mb-2',
                     'min' => date('Y-m-d'),
                 ],
             ])
-            ->add('endDate', DateType::class, [
+            ->add('end_date', DateType::class, [
                 'label' => 'Date de fin :',
+                'required' => true,
                 'attr' => [
                     'class' => 'ms-2 mb-2',
                     'min' => date('Y-m-d'),
                 ],
-            ]);
-        ;
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
