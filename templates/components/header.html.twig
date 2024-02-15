@@ -17,9 +17,8 @@
 
 				<li class="nav-item me-3">
 					<div class="d-flex gap-4">
-						{# Attendre la création des utilisateurs avant d'ajouter ces boutons  #}
 						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-							<a class="d-flex align-items-center gap-2" href="{{ path('app_profil') }}"> 
+							<a class="d-flex align-items-center gap-2" href="{{ path('app_profil') }}">
 								<img class="img-fluid rounded-circle" src="{{ app.user.getPicture() }}" alt=""/>
 								<span class="text-sm font-weight-bold">{{ app.user.getFirstname() }}</span>
 							</a>
@@ -28,8 +27,9 @@
 							<a href="{{ path('app_login') }}" class="nav-link text-sm font-weight-bold">Login</a>
 							<a href="{{ path('app_register') }}" class="nav-link text-sm font-weight-bold">Register</a>
 						{% endif %}
+					</div>
 				</li>
-			</div>
-		</li>
-	</ul>
-</div></div></nav>
+			</ul>
+		</div>
+	</div>
+</nav>
