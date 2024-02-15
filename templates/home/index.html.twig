@@ -1,33 +1,44 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}
 	Home
 {% endblock %}
 
+
 {% block body %}
-	<div class="container mt-4">
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
-		{# {{ dump(rooms) }}; #}
-			{% for room in rooms %} 
-				<div class="col">
-					<a href="{{path('app_room', {'id': room.id}) }}" class="text-decoration-none">
-						<div class="card text-center p-2">
-							<img src="{{room.picture}}" class="card-img-top" alt="{{room.name}}">
-							<div class="card-body">
-								<h5 class="card-title">{{ room.name }}</h5>
-								<p class="card-text">
-									{{ room.description }}|slice(0, 30)
-								</p>
-								<p class="card-text">Prix : <span class="fw-bold">{{ room.price }} €</span></p>
+	<div class="container mt-4 mb-4">
+
+		<div class="text-center m-4">
+			<h1>Home</h1>
+			<div
+				class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
+				{# {{ dump(rooms) }}; #}
+				{% for room in rooms %}
+					<div class="col">
+						<a href="{{path('app_room', {'id': room.id}) }}" class="text-decoration-none">
+							<div class="card text-center p-2">
+								<img src="{{room.picture}}" class="card-img-top" alt="{{room.name}}">
+								<div class="card-body">
+									<h5 class="card-title">{{ room.name }}</h5>
+									<p class="card-text">
+										{{ room.description|slice(0, 150) }}...
+									</p>
+									<p class="card-text">Prix :
+										<span class="fw-bold">{{ room.price }}
+											€</span>
+									</p>
+								</div>
 							</div>
-						</div>
-					</a>
-				</div>
-			{% endfor %}
-			
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="d-flex justify-content-center">
+			{{ knp_pagination_render(rooms) }}
 		</div>
 	</div>
-	{{ knp_pagination_render(rooms) }}
+
+
 {% endblock %}
-
-
