@@ -50,7 +50,7 @@ class Room
     private Collection $bookings;
 
     #[ORM\Column(length: 255)]
-    private ?string $picture = null;
+    private ?string $picture = '/uploads/rooms/cover.jpg';
 
     #[ORM\Column(length: 100)]
     private ?string $name = 'default';

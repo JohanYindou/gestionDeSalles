@@ -15,7 +15,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-
+        $picturePaths = ['/uploads/default-1.png', '/uploads/default-2.png'];
         // Set admin
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
@@ -24,7 +24,7 @@ class AppFixtures extends Fixture
             ->setLastname('Martin')
             ->setAddress($faker->address)
             ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
-            ->setPicture('logo.png')
+            ->setPicture($faker->randomElement($picturePaths))
             ->setPhone('06.45.45.45.45')
             ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
         $manager->persist($admin);
@@ -33,15 +33,18 @@ class AppFixtures extends Fixture
         $visitors = [];
         for ($i = 0; $i < 8; $i++) {
             $visitor = new User();
-            $visitor->setEmail('visitor' . $i . '@visitor.fr')
-                ->setRoles(['ROLE_USER'])
-                ->setFirstname($faker->firstName)
-                ->setLastname($faker->lastName)
-                ->setAddress($faker->address)
-                ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
-                ->setPicture('logo.png')
-                ->setPhone('06.45.45.45.45')
-                ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $firstname = $faker->firstName;
+            $lastname = $faker->lastName;
+            $email = strtolower($firstname . '.' . $lastname . '@visitor.fr');
+            $visitor->setEmail($email)
+            ->setRoles(['ROLE_USER'])
+            ->setFirstname($firstname)
+            ->setLastname($lastname)
+            ->setAddress($faker->address)
+            ->setPicture($faker->randomElement($picturePaths))
+            ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
+            ->setPhone('06.45.45.45.45')
+            ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
             $manager->persist($visitor);
             array_push($visitors, $visitor);
         }
@@ -72,7 +75,6 @@ class AppFixtures extends Fixture
                 ->setCountry('France')
                 ->setStatus('Disponible')
                 ->setCity('Cergy')
-                ->setPicture('logo.png')
                 ->addFeature($faker->randomElement($featureArray))
                 ->setDescription($faker->paragraphs(3, true))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
