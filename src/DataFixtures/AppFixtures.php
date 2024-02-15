@@ -50,7 +50,9 @@ class AppFixtures extends Fixture
         }
 
         // Set Features
-        $features = ['lumiere du jour', 'lumiere artificiel', 'acces PMR', 'logiciel', 'equipement',];
+
+        //Ergonomie
+        $features = ['lumiere du jour', 'lumiere artificiel', 'acces PMR'];
         $featureArray = [];
         for ($i = 0; $i < count($features); $i++) {
             $feature = new Features();
@@ -64,7 +66,35 @@ class AppFixtures extends Fixture
             array_push($featureArray, $feature);
         }
 
-        // Set rooms
+        // Logiciels
+        $logiciels = ['VsCode', 'Pack Office', 'Pack Adobe Creative Cloud'];
+        $type = ['logiciel', 'equipement'];      
+        for ($i = 0; $i < count($logiciels); $i++) {
+            $logiciel = new Features();
+            $logiciel->setName($logiciels[$i]);
+            $logiciel->setDescription($faker->sentence(30));
+            $logiciel->setType($type[0]);
+            $logiciel->setState($faker->boolean);
+            $logiciel->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $logiciel->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $manager->persist($logiciel);
+            array_push($featureArray, $logiciel);
+        }
+
+        // Materiels
+        $materiels = ['PC', 'Tableau', 'Projecteur', 'Caméra', 'Internet'];
+        for ($i = 0; $i < count($materiels); $i++) {
+            $materiel = new Features();
+            $materiel->setName($materiels[$i]);
+            $materiel->setDescription($faker->sentence(30));
+            $materiel->setType($type[1]);
+            $materiel->setState($faker->boolean);
+            $materiel->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $materiel->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+            $manager->persist($materiel);
+            array_push($featureArray, $materiel);
+        }
+
         // Set rooms
         $rooms = []; // Variable pour stocker les chambres
 
