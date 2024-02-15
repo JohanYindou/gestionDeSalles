@@ -65,6 +65,9 @@ class AppFixtures extends Fixture
         }
 
         // Set rooms
+        // Set rooms
+        $rooms = []; // Variable pour stocker les chambres
+
         for ($i = 0; $i < 100; $i++) {
             $room = new Room();
             $room
@@ -80,26 +83,35 @@ class AppFixtures extends Fixture
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
                 ->setPrice($faker->numberBetween(150, 1500))
                 ->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
+
             $manager->persist($room);
+            array_push($rooms, $room); // Ajouter la chambre au tableau $rooms
         }
 
-        // $booking = new Booking;
-        // for ($i = 0; $i < 8; $i++) {
 
-        // $booking
-        //         ->setStartDate($faker->dateTimeBetween('now', '+1 month'))
-        //         ->setEndDate($faker->dateTimeBetween('now', '+1 month'))
-        //         ->setAmount('1500')
-        //         ->setStatus('Payé')
-        //         ->setState('Booking')
-        //         ->setRoom_id()
-        //         ->setUserId($faker->numberBetween(0)
-        //         ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
-        //         ->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));          
+        // Créer des booking
+        foreach ($visitors as $visitor) {
+            for ($i = 0; $i < 3; $i++) {
+                $booking = new Booking();
+                $startDate = $faker->dateTimeBetween('now', '+1 month');
+                $endDate = clone $startDate;
+                $endDate->modify("+1 week");
 
-        //     $manager->persist($booking);
-        // }
+                // Récupérer une chambre aléatoire parmi les chambres disponibles
+                $randomRoom = $rooms[array_rand($rooms)];
 
-        $manager->flush();
+                $booking->setStartDate($startDate)
+                    ->setEndDate($endDate)
+                    ->setAmount($faker->numberBetween(150, 1500))
+                    ->setStatus('Non payé')
+                    ->setState(false)
+                    ->setRoom_id($randomRoom)
+                    ->setUserId($visitor)
+                    ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
+
+                $manager->persist($booking);
+            }
+        }
+        $manager->flush(); // Enregistrer les réservations dans la base de données
     }
 }
