@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Features{% endblock %}
+
+{% block body %}
+    <h1>Features</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ feature.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ feature.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ feature.description }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ feature.type }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ feature.state ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ feature.createdAt ? feature.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ feature.updatedAt ? feature.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_features_index') }}">back to list</a>
+
+    <a href="{{ path('app_features_edit', {'id': feature.id}) }}">edit</a>
+
+    {{ include('features/_delete_form.html.twig') }}
+{% endblock %}

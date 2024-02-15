@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Features{% endblock %}
+
+{% block body %}
+    <h1>Edit Features</h1>
+
+    {{ include('features/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_features_index') }}">back to list</a>
+
+    {{ include('features/_delete_form.html.twig') }}
+{% endblock %}
