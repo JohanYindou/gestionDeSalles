@@ -1,65 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{# {{ room.name|slice(0, 15) }} #}
-	Room...
+	{{ room.name|slice(0, 15) }}
 {% endblock %}
 
 {% block body %}
 	<div class="container p-4">
-		<div
-			class="card p-2">
-			{# A terme mettre changer la src par {{ room.picture}} #}
-			<img src="/uploads/rooms/cover.jpg" class="card-img-top mx-auto mb-3 alt="Room" >
-			<div class="card-body">
-				{# Décommenter cette version lorsque la base de données sera finie #}
-				{# 
-									<div class="d-flex justify-content-between">
-										<h5 class="card-title fw-bold">{{ room.name }}</h5>
-										<p class="card-text fw-bold">Prix : {{ room.price }} €</p>
-									</div>
-									<p class="card-text  mb-4">Description : {{ room.description }}</p>
+		<div class="card p-2">
+			<img src={{ room.picture}} class="card-img-top mx-auto mb-3 alt=" Room" >
+							<div class=" card-body">
+			<div class="d-flex justify-content-between">
+				<h5 class="card-title fw-bold">{{ room.name }}</h5>
+				<span></span>
+				<p class="card-text fw-bold">Prix :
+					{{ room.price }}
+					€</p>
+			</div>
+			<p class="card-text  mb-4">
+				<span class="fw-bold">Description :</span><br>
+				{{ room.description }}</p>
 
-									<p class="card-text">Localisation : {{ room.country }}, {{ room.city }}</p> 
-									<p class="card-text">Adresse : {{ room.address }}, {{ room.etage }}</p>
-									<p class="card-text  mb-4">Capacité :{{ room.capacity }} personnes</p>
-				#}
 
-				<div class="d-flex justify-content-between">
-					<h5 class="card-title fw-bold">Nom</h5>
-					<p class="card-text fw-bold">Prix : 999 €</p>
-					</p>
+			<p class="card-text">
+				<span class="fw-bold">Localisation :</span><br>
+				{{ room.country }},
+				{{ room.city }}</p>
+
+			<p class="card-text">
+				<span class="fw-bold">Adresse :</span><br>
+				{{ room.address }},
+				{{ room.etage }}</p>
+
+
+			{# Version fixe #}
+			{# <div class="d-flex justify-content-between">
+								<h5 class="card-title fw-bold">Nom</h5>
+								<p class="card-text fw-bold">Prix : 999 €</p>
+								</p>
+							</div>
+							<p class="card-text mb-4">Description : Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id exercitationem quo enim ducimus, quis eum culpa? Quis quo unde ab mollitia libero ad perspiciatis quaerat inventore molestias. Eligendi, quas sequi?</p>
+			
+							
+							<p class="card-text">Localisation : France, Franconville</p>
+							<p class="card-text">Adresse : Lorem ipsum dolor sit, amet consectetur adipisicing elit, 3ème étage</p>
+							<p class="card-text mb-4">Capacité : 20 personnes</p> #}
+
+
+			{# A terme diviser en 3 affichages : caracteristique,  logiciels, materiel #}
+				<div class="d-flex gap-5"> <div class="d-flex flex-column">
+					<p class="card-text fw-bold">Features :</p>
+					{% for item in room.features %}
+						<p class="card-text">-
+							{{ item.name }}</p>
+					{% endfor %}
 				</div>
-				<p class="card-text mb-4">Description : Lorem ipsum dolor sit, amet consectetur adipisicing elit. Id exercitationem quo enim ducimus, quis eum culpa? Quis quo unde ab mollitia libero ad perspiciatis quaerat inventore molestias. Eligendi, quas sequi?</p>
-
-				
-				<p class="card-text">Localisation : France, Franconville</p>
-				<p class="card-text">Adresse : Lorem ipsum dolor sit, amet consectetur adipisicing elit, 3ème étage</p>
-				<p class="card-text mb-4">Capacité : 20 personnes</p>
-				
-				{# Décommenter cette version lorsque la base de données sera finie #}
-				{# <div class="d-flex gap-5">
-                    <div class="d-flex flex-column">
-                        <p class="card-text fw-bold">Features :</p>
-                        {% for item in room.options %}
-                            <p class="card-text">- {{ item.name }}</p>
-                        {% endfor %}
-                    </div>
-
-                    <div class="d-flex flex-column">
-                        <p class="card-text fw-bold">Materials :</p>
-                        {% for item in room.options %}
-                            <p class="card-text">- {{ item.name }}</p>
-                        {% endfor %}
-                    </div>
-
-                    <div class="d-flex flex-column">
-                        <p class="card-text fw-bold">Softwares :</p>
-                        {% for item in room.options %}
-                            <p class="card-text">- {{ item.name }}</p>
-                        {% endfor %}
-                    </div>
-                </div> #}
 			</div>
 		</div>
-	</div>{% endblock %}
+	</div>
+</div>{% endblock %}

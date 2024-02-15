@@ -23,27 +23,33 @@ class RoomController extends AbstractController
             ['id' => $request->attributes->get('id')],
         );
 
-        $booking = new Booking();
-        $bookingForm = $this->createForm(BookingType::class, $booking);
-        $bookingForm->handleRequest($request);
-
-        if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-            if (!$this->getUser()) {
-                return $this->redirectToRoute('app_login');
-            }
+        if (!$room) {
+            throw $this->createNotFoundException('Room not found');
         }
-        $booking = $bookingForm->getData();
-        $booking->setStartDate($bookingForm->get('startDate')->getData());
-        $booking->setEndDate($bookingForm->get('endDate')->getData());
-        $booking->setUser($this->getUser());
-        $booking->setRoom($room);
 
-        $entityManager->persist($booking);
-        $entityManager->flush();
+        // $booking = new Booking();
+        // $bookingForm = $this->createForm(BookingType::class, $booking);
+        // $bookingForm->handleRequest($request);
+
+        // if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
+        //     if (!$this->getUser()) {
+        //         return $this->redirectToRoute('app_login');
+        //     }
+
+        //     $booking = $bookingForm->getData();
+        //     $booking->setStartDate($bookingForm->get('startDate')->getData());
+        //     $booking->setEndDate($bookingForm->get('endDate')->getData());
+        //     $booking->setUser($this->getUser());
+        //     $booking->setRoom($room);
+        //     $entityManager->persist($booking);
+        //     $entityManager->flush();
+        // }
+
+        
 
         return $this->render('room/index.html.twig', [
             'room' => $room,
-            'bookingForm' => $bookingForm->createView(),
+            // 'bookingForm' => $bookingForm->createView(),
         ]);
     }
 
