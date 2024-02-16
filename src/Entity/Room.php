@@ -38,7 +38,7 @@ class Room
     private ?string $country = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $status = null;
+    private ?string $status = 'Disponible';
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;

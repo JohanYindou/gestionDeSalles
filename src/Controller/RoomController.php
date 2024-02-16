@@ -53,7 +53,13 @@ class RoomController extends AbstractController
 
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
             // Traitement du formulaire si soumis et valide
-            // Par exemple, enregistrement de la réservation dans la base de données
+            if($booking->getStartDate() > $booking->getEndDate()) {
+                $this->addFlash('error', 'La date de fin doit être superieur à la date de debut !');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            } elseif($room->getStatus() != 'Disponible') {
+                $this->addFlash('error', 'La salle n\'est pas disponible!');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            }
             $entityManager->persist($booking);
             $entityManager->flush();
 
