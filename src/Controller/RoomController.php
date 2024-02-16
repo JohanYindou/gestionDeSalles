@@ -59,7 +59,6 @@ class RoomController extends AbstractController
 
             // Affichage du message de réservation effectuée
             $this->addFlash('success', 'Réservation effectuée avec succès !');
-            sleep(5);
             return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
         }
 

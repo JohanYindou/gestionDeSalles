@@ -8,6 +8,12 @@
 
 
 	<div class="container p-4">
+	
+{% for flash in app.flashes('success') %}<div class="alert alert-success" role="alert">
+			{{ flash }}
+			</div>
+			{% endfor %}
+
 		<div class="card p-2">
 			{# {{ dump(room.features) }} #}
 			<img src={{ room.picture}} class="card-img-top mx-auto mb-3 alt=" Room" >
@@ -68,6 +74,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+					{{ form_row(bookingForm.submit) }}
 					{{ form_end(bookingForm) }}
 				</div>
 			</div>
