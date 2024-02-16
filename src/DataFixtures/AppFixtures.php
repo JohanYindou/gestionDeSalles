@@ -111,12 +111,17 @@ class AppFixtures extends Fixture
                 ->setCountry($faker->country())
                 ->setStatus('Disponible')
                 ->setCity($faker->city())
-                ->addFeature($faker->randomElement($featureArray))
                 ->setDescription($faker->paragraphs(3, true))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
                 ->setPrice($faker->numberBetween(150, 1500))
                 ->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
 
+            shuffle($featureArray); // Mélanger le tableau des features
+            $numFeatures = $faker->numberBetween(1, count($featureArray)); // Nombre aléatoire de features à ajouter
+            $selectedFeatures = array_slice($featureArray, 0, $numFeatures); // Sélectionner des features aléatoires
+            foreach ($selectedFeatures as $feature) {
+                $room->addFeature($feature);
+            }
             $manager->persist($room);
             array_push($rooms, $room); // Ajouter la chambre au tableau $rooms
         }
