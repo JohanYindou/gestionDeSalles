@@ -15,7 +15,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $picturePaths = ['/uploads/default-1.png', '/uploads/default-2.png'];
+        $picturePaths = ['/uploads/users/default-1.jpg', '/uploads/users/default-2.jpg'];
         // Set admin
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
@@ -97,7 +97,7 @@ class AppFixtures extends Fixture
 
         // Set rooms
         $rooms = []; // Variable pour stocker les chambres
-
+        $statusRoom = ['Disponible', 'Indisponible'];
         for ($i = 0; $i < 100; $i++) {
             $room = new Room();
             $words = $faker->words($nb = 3, $asText = false);
@@ -109,19 +109,28 @@ class AppFixtures extends Fixture
                 ->setCapacity($faker->numberBetween(1, 100))
                 ->setAddress($faker->streetAddress)
                 ->setCountry($faker->country())
-                ->setStatus('Disponible')
+                ->setStatus($statusRoom[array_rand($statusRoom)])
                 ->setCity($faker->city())
-                ->addFeature($faker->randomElement($featureArray))
                 ->setDescription($faker->paragraphs(3, true))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'))
                 ->setPrice($faker->numberBetween(150, 1500))
                 ->setUpdatedAt($faker->dateTimeBetween('now', '+1 month'));
 
+            shuffle($featureArray); // Mélanger le tableau des features
+            $numFeatures = $faker->numberBetween(1, count($featureArray)); // Nombre aléatoire de features à ajouter
+            $selectedFeatures = array_slice($featureArray, 0, $numFeatures); // Sélectionner des features aléatoires
+            foreach ($selectedFeatures as $feature) {
+                $room->addFeature($feature);
+            }
             $manager->persist($room);
             array_push($rooms, $room); // Ajouter la chambre au tableau $rooms
         }
 
-
+        // il faut ajouter un tri pour les chambres qui sont déja utilisées 
+        // Récupérer une chambre aléatoire parmi les chambres disponibles
+        $availableRooms = $manager->getRepository(Room::class)->findBy(['status' => 'Disponible']);
+        $randomRoom = $faker->randomElement($availableRooms);
+        
         $status= ['Non Payé', 'Payé'];
         // Créer des booking
         foreach ($visitors as $visitor) {
@@ -130,9 +139,8 @@ class AppFixtures extends Fixture
                 $startDate = $faker->dateTimeBetween('now', '+1 month');
                 $endDate = clone $startDate;
                 $endDate->modify("+1 week");
-
-                // Récupérer une chambre aléatoire parmi les chambres disponibles
-                $randomRoom = $rooms[array_rand($rooms)];
+                
+                
 
                 $booking->setStartDate($startDate)
                     ->setEndDate($endDate)
