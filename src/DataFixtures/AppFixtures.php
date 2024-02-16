@@ -15,7 +15,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
-        $picturePaths = ['/uploads/default-1.png', '/uploads/default-2.png'];
+        $picturePaths = ['/uploads/users/default-1.png', '/uploads/users/default-2.png'];
         // Set admin
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
