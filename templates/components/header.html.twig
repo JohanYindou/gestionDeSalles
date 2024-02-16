@@ -1,46 +1,36 @@
 <nav class="navbar navbar-expand-lg bg-body-secondary">
-
 	<div class="container-fluid">
 		<a class="navbar-brand" href="{{ path('app_home') }}">
 			<img src="/images/logo.png" alt="Logo" width="72" height="48">
 		</a>
 		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul
-				class="navbar-nav ms-auto">
-				{# rajouter la classe active et l'attribut aria-current pour le lien actif #}
+			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="/">Home</a>
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %} d-flex align-items-center" aria-current="page" href="{{ path('app_home') }}">Home</a>
 				</li>
 				<li class="nav-item me-3">
-					<a class="nav-link " href="/rooms">Rooms</a>
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_rooms' %} active{% endif %} d-flex align-items-center" href="{{ path('app_rooms') }}">Rooms</a>
 				</li>
-
 				<li class="nav-item me-3">
 					<div class="d-flex gap-4">
 						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 							{% if is_granted('ROLE_ADMIN') %}
-								{# Attendre que le dashboard soit réglé  #}
 								<a href="{{ path('admin') }}" class="nav-link text-sm font-weight-bold">Dashboard</a>
-								<a class="d-flex align-items-center gap-2" href="{{ path('app_profil') }}">
-									<img class="img-fluid rounded-circle" src="{{ app.user.getPicture() }}" alt=""/>
-									<span class="text-sm font-weight-bold">{{ app.user.getFirstname() }}</span>
-								</a>
-
-							{% else %}
-								<a class="d-flex align-items-center gap-2" href="{{ path('app_profil') }}">
-									<img class="img-fluid rounded-circle" src="{{ app.user.getPicture() }}" alt=""/>
-									<span class="text-sm font-weight-bold">{{ app.user.getFirstname() }}</span>
-								</a>
 							{% endif %}
+							<a href="{{ path('app_profil') }}" class=" text-sm font-weight-bold d-flex gap-2 text-decoration-none">
+								<img class="img-fluid rounded-circle custom-img-size" src="{{ app.user.getPicture() }}" alt="Profile Picture" style="width: 50px; height: 50px;"/>
+<span class=" nav-link text-sm font-weight-bold {% if app.request.attributes.get('_route') == 'app_profil' %} active{% endif %}">{{ app.user.getFirstname() }}</span>
+
+							</a>
 							<a href="{{ path('app_logout') }}" class="nav-link text-sm font-weight-bold">Logout</a>
 						{% else %}
 							<a href="{{ path('app_login') }}" class="nav-link text-sm font-weight-bold">Login</a>
 							<a href="{{ path('app_register') }}" class="nav-link text-sm font-weight-bold">Register</a>
 						{% endif %}
 					</div>
-
 				</li>
 			</ul>
 		</div>
 	</div>
 </nav>
+
