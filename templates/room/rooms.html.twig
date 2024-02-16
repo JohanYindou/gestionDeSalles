@@ -41,37 +41,4 @@
 
     </div>
 
-
-    {% block stylesheets %}
-        {{ parent() }}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css">
-    {% endblock %}
-
-
-    {% block javascripts %}
-        {{ parent() }}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
-        <script>
-            // Initialisation du slider de prix
-var slider = new Slider('#priceRange', {
-min: 150,
-max: 1500,
-step: 50,
-value: [150, 1500]
-});
-
-
-// Initialisation du slider de capacité
-var capacitySlider = new Slider('#capacityRange', {
-min: 1,
-max: 100,
-step: 5,
-value: [1, 100]
-});
-        </script>
-    {% endblock %}
-
-
-
-
 {% endblock %}
