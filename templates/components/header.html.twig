@@ -6,26 +6,25 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item">
-					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %} d-flex align-items-center" aria-current="page" href="{{ path('app_home') }}">Home</a>
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %} d-flex align-items-center justify-content-center fs-5" aria-current="page" href="{{ path('app_home') }}">Home</a>
 				</li>
 				<li class="nav-item me-3">
-					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_rooms' %} active{% endif %} d-flex align-items-center" href="{{ path('app_rooms') }}">Rooms</a>
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_rooms' %} active{% endif %} d-flex align-items-center justify-content-center fs-5" href="{{ path('app_rooms') }}">Rooms</a>
 				</li>
 				<li class="nav-item me-3">
 					<div class="d-flex gap-4">
 						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 							{% if is_granted('ROLE_ADMIN') %}
-								<a href="{{ path('admin') }}" class="nav-link text-sm font-weight-bold">Dashboard</a>
+								<a href="{{ path('admin') }}" class="nav-link font-weight-bold fs-5">Dashboard</a>
 							{% endif %}
-							<a href="{{ path('app_profil') }}" class=" text-sm font-weight-bold d-flex gap-2 text-decoration-none">
+							<a href="{{ path('app_profil') }}" class="font-weight-bold d-flex gap-2 text-decoration-none fs-5">
 								<img class="img-fluid rounded-circle custom-img-size" src="{{ app.user.getPicture() }}" alt="Profile Picture" style="width: 50px; height: 50px;"/>
-<span class=" nav-link text-sm font-weight-bold {% if app.request.attributes.get('_route') == 'app_profil' %} active{% endif %}">{{ app.user.getFirstname() }}</span>
-
+								<span class="nav-link font-weight-bold {% if app.request.attributes.get('_route') == 'app_profil' %} active{% endif %} fs-5">{{ app.user.getFirstname() }}</span>
 							</a>
-							<a href="{{ path('app_logout') }}" class="nav-link text-sm font-weight-bold">Logout</a>
+							<a href="{{ path('app_logout') }}" class="nav-link font-weight-bold fs-5">Logout</a>
 						{% else %}
-							<a href="{{ path('app_login') }}" class="nav-link text-sm font-weight-bold">Login</a>
-							<a href="{{ path('app_register') }}" class="nav-link text-sm font-weight-bold">Register</a>
+							<a href="{{ path('app_login') }}" class="nav-link font-weight-bold fs-5">Login</a>
+							<a href="{{ path('app_register') }}" class="nav-link font-weight-bold fs-5">Register</a>
 						{% endif %}
 					</div>
 				</li>
