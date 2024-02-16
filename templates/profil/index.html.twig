@@ -6,12 +6,12 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                
                 <h5>Informations sur le profil</h5>
                 <p>Nom : {{ app.user.lastname }}</p>
                 <p>Email : {{ app.user.email }}</p>
                 <p>Adresse : {{ app.user.address }}</p>
-               
+                <!-- Ajouter un lien vers la page d'édition -->
+                <a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
             </div>
         </div>
     </div>
