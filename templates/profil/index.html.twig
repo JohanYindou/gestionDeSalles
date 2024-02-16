@@ -1,18 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil de {{ app.user.firstname }}{% endblock %}
+{% block title %}Profil de
+	{{ app.user.firstname }}
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h5>Informations sur le profil</h5>
-                <p>Nom : {{ app.user.lastname }}</p>
-                <p>Email : {{ app.user.email }}</p>
-                <p>Adresse : {{ app.user.address }}</p>
-                <!-- Ajouter un lien vers la page d'édition -->
-                <a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+	<div class="container mt-4">
+{{ dump(app.user.bookings) }}
+
+		<div class="card p-3">
+			<div class="card-header">
+				<h5>Informations sur le profil</h5>
+				<img src="{{ app.user.picture }}" alt="Photo de profil" class="img-fluid rounded-pill">
+				<p>Nom Complet :
+					{{ app.user.lastname }}
+					{{ app.user.firstname }}</p>
+				<p>Email :
+					{{ app.user.email }}</p>
+				<p>Adresse :
+					{{ app.user.address }}</p>
+				<p>Téléphone :
+					{{ app.user.phone }}</p>
+
+				{# <!-- Ajouter les booking du compte au profil  -->
+				<div class="col">
+					<p>Mes Bookings</p>
+					{% for booking in app.user.bookings %}
+					</p>
+					<div class="card p-3">
+						<p>Booking n°{{ booking.id }}</p>
+					</div>
+				{% endfor %} #}
+			</div>
+
+
+			<!-- Ajouter un lien vers la page d'édition -->
+			<a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
+		</div>
+	</div>
+</div>{% endblock %}
