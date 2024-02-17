@@ -18,11 +18,13 @@ class HomeController extends AbstractController
         PaginatorInterface $paginator,
     ): Response
     {
-        $rooms = $paginator->paginate(
-        $rooms = $roomRepository->findAll(),
-            $request->query->getInt('page', 1),9
+        $roomsQuery = $roomRepository->findByStatus('Disponible');
 
-            );
+        $rooms = $paginator->paginate(
+            $roomsQuery,
+            $request->query->getInt('page', 1),
+            9
+        );
         return $this->render('home/index.html.twig', [
             'rooms' => $rooms,
             'featuresRooms' => $roomRepository->findAll(),

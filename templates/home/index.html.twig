@@ -11,8 +11,10 @@
 
 		<div class="text-center m-4">
 			<h1>Home</h1>
-			<div
-				class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
+			<div class="d-flex justify-content-start mt-4 mb-4">
+				<h1>Voici les rooms disponibles</h1>
+			</div>
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4">
 				{# {{ dump(rooms) }}; #}
 				{% for room in rooms %}
 					<div class="col">
