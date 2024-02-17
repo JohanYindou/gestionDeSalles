@@ -83,9 +83,20 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-					{{ form_row(bookingForm.submit) }}
 					{{ form_end(bookingForm) }}
+					{# {{ form_row(bookingForm.submit) }} #}
 
 				</div>
 			</div>
+
+
+<script>
+	// Attendre 3 secondes puis masquer le message flash
+setTimeout(function () {
+document.querySelectorAll('.alert').forEach(function (alert) {
+alert.style.display = 'none';
+});
+}, 3000);
+</script>
+
 		{% endblock %}
