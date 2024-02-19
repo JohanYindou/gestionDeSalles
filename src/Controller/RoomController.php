@@ -33,33 +33,42 @@ class RoomController extends AbstractController
         $room = $roomRepository->findOneBy(
             ['id' => $request->attributes->get('id')],
         );
+
         if (!$room) {
             throw $this->createNotFoundException('Room not found');
         }
 
+        // Récupérer la liste des reservations pour la salle
         $booking = new Booking();
-        $booking->setRoom_id($room); // Définir la salle pour la réservation
-        $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
-        $booking->setStartDate(new \DateTime($request->request->get('start_date'))); // Récupérer la date de début du formulaire
-        $booking->setEndDate(new \DateTime($request->request->get('end_date'))); // Récupérer la date de fin du formulaire
-        $booking->setAmount($room->getPrice()); // Définir le prix de la salle
-        $booking->setState(false); // Définir l'état de la reservation
-        $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
-        $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
-
-        // Création du formulaire de réservation
         $bookingForm = $this->createForm(BookingType::class, $booking);
+        
+        // Traitement du formulaire
         $bookingForm->handleRequest($request);
+        
+        dump($bookingForm);
 
+        // Traitement du formulaire si soumis et valide
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
-            // Traitement du formulaire si soumis et valide
-            if($booking->getStartDate() > $booking->getEndDate()) {
+            $booking = $bookingForm->getData();
+            if($booking->getStartDate() > $booking->getEndDate()) 
+            {
                 $this->addFlash('error', 'La date de fin doit être superieur à la date de debut !');
-                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            } elseif($room->getStatus() != 'Disponible') {
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);    
+            } 
+            elseif($room->getStatus() != 'Disponible') 
+            {
                 $this->addFlash('error', 'La salle n\'est pas disponible!');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
             }
+
+            $booking->setRoom_id($room); // Définir la salle pour la réservation
+            $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
+            $booking->setAmount($room->getPrice()); // Définir le prix de la salle
+            $booking->setState(false); // Définir l'état de la reservation
+            $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
+            $booking->setStartDate($booking->getStartDate()); // Récupérer la date de début du formulaire
+            $booking->setEndDate($booking->getStartDate()); // Récupérer la date de fin du formulaire
+            $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
             $entityManager->persist($booking);
             $entityManager->flush();
 
