@@ -6,7 +6,7 @@
 
 {% block body %}
 	<div class="container mt-4">
-{{ dump(app.user.bookings) }}
+{# {{ dump(app.user.bookings) }} #}
 
 		<div class="card p-3">
 			<div class="card-header">
@@ -22,7 +22,7 @@
 				<p>Téléphone :
 					{{ app.user.phone }}</p>
 
-				{# <!-- Ajouter les booking du compte au profil  -->
+				<!-- Ajouter les booking du compte au profil  -->
 				<div class="col">
 					<p>Mes Bookings</p>
 					{% for booking in app.user.bookings %}
@@ -30,7 +30,7 @@
 					<div class="card p-3">
 						<p>Booking n°{{ booking.id }}</p>
 					</div>
-				{% endfor %} #}
+				{% endfor %}
 			</div>
 
 
