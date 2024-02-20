@@ -22,8 +22,6 @@
 
 
 		<div class="card p-2">
-
-			{# {{ dump(room.features) }} #}
 			<img src={{ room.picture}} class="card-img-top mx-auto mb-3 alt=" Room" >
 																							<div class=" card-body">
 			<div class="d-flex justify-content-between">
@@ -38,8 +36,12 @@
 				{{ room.description }}</p>
 
 			<p class="card-text  mb-4">
-				<span class="fw-bold">Description :</span><br>
+				<span class="fw-bold">Status :</span><br>
 				{{ room.status }}</p>
+				
+			<p class="card-text  mb-4">
+				<span class="fw-bold">Capacité :</span><br>
+				{{ room.capacity }}</p>
 				
 			<p class="card-text">
 				<span class="fw-bold">Localisation :</span><br>
