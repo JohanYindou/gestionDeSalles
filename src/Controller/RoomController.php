@@ -94,8 +94,6 @@ class RoomController extends AbstractController
         FeaturesRepository $featureRepository
     ): Response {
         
-        // pour l'instant on applique pas les filtres aux rooms  mais cela devrait être géré dans une prochaine version
-
         // Récupération des critères de filtrage
         $priceMin = $request->query->get('price_min');
         $priceMax = $request->query->get('price_max');
