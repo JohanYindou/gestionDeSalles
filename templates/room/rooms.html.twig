@@ -1,44 +1,86 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}
-    All Rooms
+	All Rooms
 {% endblock %}
 
-
 {% block body %}
-    {# {{ dump(rooms) }} #}
-    <div class="container mt-4 ">
-        <div class="text-center">
-            <h1>Toutes les rooms</h1>
-        </div>
-        <div
-            class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4 mt-4 mb-4">
-            {# {{ dump(rooms) }}; #}
-            {% for room in rooms %}
-                <div class="col">
-                    <a href="{{path('app_room', {'id': room.id}) }}" class="text-decoration-none">
-                        <div class="card text-center p-2">
-                            <img src="{{room.picture}}" class="card-img-top" alt="{{room.name}}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ room.name }}</h5>
-                                <p class="card-text">
-                                    {{ room.description|slice(0, 150) }}...
-                                </p>
-                                <p class="card-text">Prix :
-                                    <span class="fw-bold">{{ room.price }}
-                                        €</span>
-                                </p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
-        </div>
-<div class="d-flex justify-content-center">
-	{{ knp_pagination_render(rooms) }}
-</div>
+{# {{ dump(allFeatures) }} #}
 
-    </div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-4">
+				<h2>Filtres</h2>
+				<form method="GET">
+					<div class="mb-3">
+						<label for="price_min">Prix min:</label>
+						<input type="number" class="form-control" id="price_min" name="price_min" value="{{ priceMin }}">
+					</div>
+					<div class="mb-3">
+						<label for="price_max">Prix max:</label>
+						<input type="number" class="form-control" id="price_max" name="price_max" value="{{ priceMax }}">
+					</div>
 
+					<div class="mb-3">
+						<label for="capacity_min">Capacité min:</label>
+						<input type="number" class="form-control" id="capacity_min" name="capacity_min" value="{{ capacityMin }}">
+					</div>
+					<div class="mb-3">
+						<label for="capacity_max">Capacité max:</label>
+						<input type="number" class="form-control" id="capacity_max" name="capacity_max" value="{{ capacityMax }}">
+					</div>
+
+					<div class="mb-3">
+						<label for="status">Status:</label>
+						<select class="form-select" id="status" name="status">
+							<option value="">Tous</option>
+							<option value="Disponible" {{ status == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+							<option value="Indisponible" {{ status == 'Indisponible' ? 'selected' : '' }}>Indisponible</option>
+						</select>
+					</div>
+
+					{# Marche pas pour l'instant #}
+
+					{# <div class="mb-3">
+						<label for="features">Features:</label>
+						{% for item in allFeatures %}
+							<div class="form-check form-check-inline">
+								<input type="checkbox" class="form-check-input" id="feature_{{ item.id }}" name="features[]" value="{{ item.id }}" {{ item is same as([item.id]) ? 'checked' : '' }}>
+								<label class="form-check-label" for="feature_{{ item.id }}">{{ item.name }}</label>
+							</div>
+						{% endfor %}
+					</div> #}
+
+					<button type="submit" class="btn btn-primary">Filtrer</button>
+					<a href="{{ path('app_rooms') }}" class="btn btn-secondary">Reinitialiser</a>
+				</form>
+			</div>
+			<div class="col-md-8">
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4 mt-4 mb-4">
+					{% for room in rooms %}
+						<div class="col">
+							<a href="{{ path('app_room', {'id': room.id}) }}" class="text-decoration-none">
+								<div class="card text-center p-2">
+									<img src="{{ room.picture }}" class="card-img-top" alt="{{ room.name }}">
+									<div class="card-body">
+										<h5 class="card-title">{{ room.name }}</h5>
+										<p class="card-text">
+											{{ room.description|slice(0, 150) }}...
+										</p>
+										<p class="card-text">Prix :
+											<span class="fw-bold">{{ room.price }}
+												€</span>
+										</p>
+									</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="d-flex justify-content-center">
+					{{ knp_pagination_render(rooms) }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
