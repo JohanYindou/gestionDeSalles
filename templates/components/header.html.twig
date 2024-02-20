@@ -3,33 +3,43 @@
 		<a class="navbar-brand" href="{{ path('app_home') }}">
 			<img src="/images/logo.png" alt="Logo" width="72" height="48">
 		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ms-auto">
-				<li class="nav-item">
-					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %} d-flex align-items-center justify-content-center fs-5" aria-current="page" href="{{ path('app_home') }}">Home</a>
+			<ul class="navbar-nav ms-auto d-flex text-align-center">
+				<li class="nav-item flex-column me-3">
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_home' %} active{% endif %}  fs-5" aria-current="page" href="{{ path('app_home') }}">Home</a>
 				</li>
-				<li class="nav-item me-3">
-					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_rooms' %} active{% endif %} d-flex align-items-center justify-content-center fs-5" href="{{ path('app_rooms') }}">Rooms</a>
+				<li class="nav-item flex-column me-3">
+					<a class="nav-link{% if app.request.attributes.get('_route') == 'app_rooms' %} active{% endif %}  fs-5" href="{{ path('app_rooms') }}">Rooms</a>
 				</li>
-				<li class="nav-item me-3">
-					<div class="d-flex gap-4">
-						{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-							{% if is_granted('ROLE_ADMIN') %}
-								<a href="{{ path('admin') }}" class="nav-link font-weight-bold fs-5">Dashboard</a>
-							{% endif %}
-							<a href="{{ path('app_profil') }}" class="font-weight-bold d-flex gap-2 text-decoration-none fs-5">
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<li class="nav-item flex-column me-3">
+							<a href="{{ path('admin') }}" class="nav-link font-weight-bold fs-5">Dashboard</a>
+						</li>
+					{% endif %}
+					<li class="nav-item flex-column me-3">
+						<div class="text-align-center">
+							<a href="{{ path('app_profil') }}" class="font-weight-bold d-flex gap-2 text-decoration-none  fs-5">
 								<img class="img-fluid rounded-circle custom-img-size" src="{{ app.user.getPicture() }}" alt="Profile Picture" style="width: 50px; height: 50px;"/>
 								<span class="nav-link font-weight-bold {% if app.request.attributes.get('_route') == 'app_profil' %} active{% endif %} fs-5">{{ app.user.getFirstname() }}</span>
 							</a>
-							<a href="{{ path('app_logout') }}" class="nav-link font-weight-bold fs-5">Logout</a>
-						{% else %}
-							<a href="{{ path('app_login') }}" class="nav-link font-weight-bold fs-5">Login</a>
-							<a href="{{ path('app_register') }}" class="nav-link font-weight-bold fs-5">Register</a>
-						{% endif %}
-					</div>
-				</li>
+						</div>
+					</li>
+					<li class="nav-item flex-column me-3">
+						<a href="{{ path('app_logout') }}" class="nav-link font-weight-bold fs-5">Logout</a>
+					</li>
+				{% else %}
+					<li class="nav-item flex-column me-3">
+						<a href="{{ path('app_login') }}" class="nav-link font-weight-bold fs-5">Login</a>
+					</li>
+					<li class="nav-item flex-column me-3">
+						<a href="{{ path('app_register') }}" class="nav-link font-weight-bold fs-5">Register</a>
+					</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>
 </nav>
-
