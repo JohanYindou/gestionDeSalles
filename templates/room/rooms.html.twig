@@ -36,19 +36,7 @@
 							<option value="Indisponible" {{ status == 'Indisponible' ? 'selected' : '' }}>Indisponible</option>
 						</select>
 					</div>
-
-					{# Marche pas pour l'instant #}
-
-					{# <div class="mb-3">
-						<label for="features">Features:</label>
-						{% for item in allFeatures %}
-							<div class="form-check form-check-inline">
-								<input type="checkbox" class="form-check-input" id="feature_{{ item.id }}" name="features[]" value="{{ item.id }}" {{ item is same as([item.id]) ? 'checked' : '' }}>
-								<label class="form-check-label" for="feature_{{ item.id }}">{{ item.name }}</label>
-							</div>
-						{% endfor %}
-					</div> #}
-
+					
 					<button type="submit" class="btn btn-primary">Filtrer</button>
 					<a href="{{ path('app_rooms') }}" class="btn btn-secondary">Reinitialiser</a>
 				</form>

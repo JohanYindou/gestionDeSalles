@@ -100,25 +100,10 @@ class RoomController extends AbstractController
         $capacityMin = $request->query->get('capacity_min');
         $capacityMax = $request->query->get('capacity_max');
         $status = $request->query->get('status');
-        $features = $request->query->get('features');
 
         // Construction de la requête filtrée avec Doctrine Query Builder
         $queryBuilder = $roomRepository->createQueryBuilder('r');
 
-        // Prepare selected features array (initialize to avoid potential errors)
-        $selectedFeatures = [];
-
-        // Retrieve selected features from GET request
-        if ($request->query->get('features')) {
-            $selectedFeatures = explode(',', $request->query->get('features'));
-        }
-
-        // Update query builder based on selected features
-        if (!empty($selectedFeatures)) {
-            $queryBuilder->join('r.features', 'f')
-            ->andWhere('f.id IN (:selectedFeatures)')
-            ->setParameter('selectedFeatures', $selectedFeatures);
-        }
         if ($priceMin && $priceMax) {
             $queryBuilder->andWhere('r.price BETWEEN :priceMin AND :priceMax')
                 ->setParameter('priceMin', $priceMin)
@@ -136,14 +121,6 @@ class RoomController extends AbstractController
                 ->setParameter('status', $status);
         }
 
-        if ($features) {
-            $queryBuilder->join('r.features', 'f')
-                ->andWhere('f.id IN (:features)')
-                ->setParameter('features', $features);
-        }
-        
-        $allFeatures = $featureRepository->findAll();
-
         $rooms = $paginator->paginate(
             $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
@@ -152,14 +129,11 @@ class RoomController extends AbstractController
 
         return $this->render('room/rooms.html.twig', [
             'rooms' => $rooms,
-            'features' => $features,
-            'selectedFeatures' => $selectedFeatures,
             'priceMin' => $priceMin,
             'priceMax' => $priceMax,
             'capacityMin' => $capacityMin,
             'capacityMax' => $capacityMax,
             'status' => $status,
-            'allFeatures' => $allFeatures,
         ]);
     }
 }
