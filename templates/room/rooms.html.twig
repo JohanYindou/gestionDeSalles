@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	All Rooms
+	{% if priceMin or priceMax or capacityMin or capacityMax or status %}
+			Résultats de la recherche
+	{% else %}
+			Toutes les salles
+	{% endif %}
 {% endblock %}
 
 {% block body %}
@@ -37,24 +41,22 @@
 						</select>
 					</div>
 
-					{# Marche pas pour l'instant #}
-
-					{# <div class="mb-3">
-						<label for="features">Features:</label>
-						{% for item in allFeatures %}
-							<div class="form-check form-check-inline">
-								<input type="checkbox" class="form-check-input" id="feature_{{ item.id }}" name="features[]" value="{{ item.id }}" {{ item is same as([item.id]) ? 'checked' : '' }}>
-								<label class="form-check-label" for="feature_{{ item.id }}">{{ item.name }}</label>
-							</div>
-						{% endfor %}
-					</div> #}
-
 					<button type="submit" class="btn btn-primary">Filtrer</button>
 					<a href="{{ path('app_rooms') }}" class="btn btn-secondary">Reinitialiser</a>
 				</form>
 			</div>
 			<div class="col-md-8">
-				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4 mt-4 mb-4">
+				{% if priceMin or priceMax or capacityMin or capacityMax or status %}
+					<h2>
+						Résultats de la recherche
+					</h2>
+				{% else %}
+					<h2>
+						Toutes les salles
+					</h2>
+				{% endif %}
+
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-3 g-4 mt-2 mb-4">
 					{% for room in rooms %}
 						<div class="col">
 							<a href="{{ path('app_room', {'id': room.id}) }}" class="text-decoration-none">

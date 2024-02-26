@@ -26,10 +26,9 @@
 																							<div class=" card-body">
 			<div class="d-flex justify-content-between">
 				<h5 class="card-title fw-bold">{{ room.name }}</h5>
-				<span></span>
-				<p class="card-text fw-bold">Prix :
-					{{ room.price }}
-					€</p>
+				<span data-bs-toggle="tooltip" data-bs-placement="top" title="Prix de base par semaine">
+            		<p class="card-text fw-bold">Prix : {{ room.price }} €</p>
+          		</span>
 			</div>
 			<p class="card-text  mb-4">
 				<span class="fw-bold">Description :</span><br>
@@ -99,6 +98,12 @@ document.querySelectorAll('.alert').forEach(function (alert) {
 alert.style.display = 'none';
 });
 }, 3000);
+
+// Initialiser les tooltips de Bootstrap
+          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+          var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+		  })
 </script>
 
 		{% endblock %}
