@@ -51,31 +51,44 @@ class RoomController extends AbstractController
         // Traitement du formulaire si soumis et valide
         if ($bookingForm->isSubmitted() && $bookingForm->isValid()) {
             $booking = $bookingForm->getData();
-            if($booking->getStartDate() > $booking->getEndDate()) 
-            {
-                $this->addFlash('error', 'La date de fin doit être superieur à la date de debut !');
-                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);    
-            } 
-            elseif($room->getStatus() != 'Disponible') 
+
+            if($room->getStatus() != 'Disponible') 
             {
                 $this->addFlash('error', 'La salle n\'est pas disponible!');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            }  
+
+            // Vérifier si la date de fin est après la date de début
+            $interval = date_diff($booking->getStartDate(), $booking->getEndDate())  ;
+
+            if ($interval->y < 0) {
+                // Date de fin dans une année antérieure
+                $this->addFlash('error', 'La date de fin doit être dans l\'année en cours ou une année ultérieure.');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            } elseif ($interval->y == 0 && $interval->m < 0) {
+                // Date de fin dans un mois antérieur
+                $this->addFlash('error', 'La date de fin doit être dans le mois en cours ou un mois ultérieur.');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            } elseif ($interval->y == 0 && $interval->m == 0 && $interval->d <= 0) {
+                // Date de fin identique ou antérieure à la date de début
+                $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
+            } else {
+                // Date de fin valide
+                $booking->setRoom_id($room); // Définir la salle pour la réservation
+                $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
+                $booking->setAmount($room->getPrice()); // Définir le prix de la salle
+                $booking->setState(false); // Définir l'état de la reservation
+                $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
+                $booking->setStartDate($booking->getStartDate()); // Récupérer la date de début du formulaire
+                $booking->setEndDate($booking->getEndDate()); // Récupérer la date de fin du formulaire $booking->setEndDate($booking->getStartDate()); // Récupérer la date de fin du formulaire
+                $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
+                $entityManager->persist($booking);
+                $entityManager->flush();
+                // Affichage du message de réservation effectuée
+                $this->addFlash('success', 'Réservation effectuée avec succès !');
+                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
             }
-
-            $booking->setRoom_id($room); // Définir la salle pour la réservation
-            $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
-            $booking->setAmount($room->getPrice()); // Définir le prix de la salle
-            $booking->setState(false); // Définir l'état de la reservation
-            $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
-            $booking->setStartDate($booking->getStartDate()); // Récupérer la date de début du formulaire
-            $booking->setEndDate($booking->getStartDate()); // Récupérer la date de fin du formulaire
-            $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
-            $entityManager->persist($booking);
-            $entityManager->flush();
-
-            // Affichage du message de réservation effectuée
-            $this->addFlash('success', 'Réservation effectuée avec succès !');
-            return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
         }
 
 
