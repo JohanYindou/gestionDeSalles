@@ -21,7 +21,7 @@
 	{% endfor %}
 
 	<div class="card p-2">
-		<img src="{ room.picture }" class="card-img-top mx-auto mb-3" alt="Room">
+		<img src="{{ room.picture }}" class="card-img-top mx-auto mb-3" alt="Room">
 		<div class="card-body">
 			<div class="d-flex justify-content-between">
 				<h5 class="card-title fw-bold">{{ room.name }}</h5>
@@ -97,24 +97,22 @@
 			</div>
 		</div>
 	</div>
+</div>
 
-
-	<script>
-		// Attendre 3 secondes puis masquer le message flash
-		      setTimeout(function () {
-		        document.querySelectorAll('.alert').forEach(function (alert) {
-		          alert.style.display = 'none';
-		        });
-		      }, 3000);
+<script>
+	// Attendre 3 secondes puis masquer le message flash
+		setTimeout(function () {
+			document.querySelectorAll('.alert').forEach(function (alert) {
+				alert.style.display = 'none';
+			});
+		}, 3000);
 		
-		      // Initialiser tooltips de Bootstrap
+	// Initialiser tooltips de Bootstrap
       var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl)
       })
-    </script>
-
-  </div>
+</script>
 
 {% endblock %}
 
