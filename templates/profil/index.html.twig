@@ -67,12 +67,11 @@
 	</div>
 
 <script>
-// Attendre 3 secondes puis masquer le message flash
-setTimeout(function () {
-document.querySelectorAll('.alert').forEach(function (alert) {
-alert.style.display = 'none';
-});
-}, 3000);
-
+	// Attendre 3 secondes puis masquer le message flash
+	setTimeout(function () {
+		document.querySelectorAll('.alert').forEach(function (alert) {
+			alert.style.display = 'none';
+		});
+	}, 3000);
 </script>
 {% endblock %}
