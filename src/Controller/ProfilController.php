@@ -16,19 +16,15 @@ class ProfilController extends AbstractController
     #[Route('/profil', name: 'app_profil')]
     public function index(
         Request $request,
-        EntityManagerInterface $entityManager,
-        ProfileService $profileService,
     ): Response {
         $user = $this->getUser();
-        $form = $this->createForm(ProfilType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $profileService->updateProfile($form, $user, $entityManager, $this->getParameter('images_directory'));
-            $this->addFlash('success', 'Your profile has been updated');
-            return $this->redirectToRoute('profil');
+
+        if (!$user) {
+            // Rediriger l'utilisateur vers la page de connexion s'il n'est pas connecté
+            return $this->redirectToRoute('app_login');
         }
+
         return $this->render('profil/index.html.twig', [
-            'form' => $form->createView(),
             'user' => $user,
         ]);
     }
@@ -66,10 +62,10 @@ class ProfilController extends AbstractController
             }
             $em->persist($user);
             $em->flush();
-
-
-
             $this->addFlash('success', "Votre profil a bien été mis à jour");
+            return $this->redirectToRoute('app_profil');
+        }elseif ( $userForm->isSubmitted() ) {
+            $this->addFlash('error', "Une erreur est survenue");
             return $this->redirectToRoute('app_profil');
         }
 
