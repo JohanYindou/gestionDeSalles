@@ -1,37 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Profile{% endblock %}
+{% block title %}Edit Profile
+{% endblock %}
 
 {% block body %}
-    <h1 class="mt-4">Edit Your Profile</h1>
+	<div class="container mt-4 fs-4">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<h1 class="mt-4">Edit Your Profile</h1>
+				{{ form_start(userForm,{'attr': {'data-turbo-action': 'replace', 'data-turbo-frame': 'target', 'class': 'needs-validation', 'novalidate': ''}}) }}
 
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <form method="post" enctype="multipart/form-data">
-                <div class="mb-3">
-                    {{ form_label(form.lastname) }}
-                    {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.picture) }}
-                    {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.phone) }}
-                    {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.address) }}
-                    {{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
-                </div>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
-            </form>
-        </div>
-    </div>
+				<div class="mb-3">
+					<label for="lastname" class="form-label">Lastname</label>
+					{{ form_widget(userForm.lastname, {'attr': {'class': 'form-control', 'id': 'lastname' , 'required' : ''}}) }}
+					<div class="invalid-feedback">
+						Please provide a Lastname.
+					</div>
+				</div>
+				<div class="mb-3">
+					<label for="firstname" class="form-label">Firstname</label>
+					{{ form_widget(userForm.firstname, {'attr': {'class': 'form-control', 'id': 'firstname' , 'required' : ''}}) }}
+					<div class="invalid-feedback">
+						Please provide a Firstname.
+					</div>
+				</div>
+				<div class="mb-3">
+					<label for="phone" class="form-label">Phone</label>
+					{{ form_widget(userForm.phone, {'attr': {'class': 'form-control', 'id': 'phone'}}) }}
+				</div>
+				<div class="mb-3">
+					<label for="address" class="form-label">Address</label>
+					{{ form_widget(userForm.address, {'attr': {'class': 'form-control', 'id': 'address', 'required' : ''}}) }}
+				</div>
+				<div class="mb-3">
+					{{ form_row(userForm.picture) }}
+				</div>
 
-    {% if app.flashes('success') %}
-        <div class="alert alert-success" role="alert">
-            {{ app.flashes('success')[0] }}
-        </div>
-    {% endif %}
+				<button class="btn btn-primary bg-primary" type="submit">Save</button>
+				<a href="/profil" class="btn btn-secondary">Cancel</a>
+				{{ form_end(userForm) }}
+			</div>
+		</div>
+
+
+	</div>
+
 {% endblock %}

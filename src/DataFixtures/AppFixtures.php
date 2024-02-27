@@ -129,6 +129,10 @@ class AppFixtures extends Fixture
         // il faut ajouter un tri pour les chambres qui sont déja utilisées 
         // Récupérer une chambre aléatoire parmi les chambres disponibles
         $availableRooms = $manager->getRepository(Room::class)->findBy(['status' => 'Disponible']);
+
+        // Vérifier que available Room n'est pas vide avant de procéder à l'affect
+        // Vérifier que randomRoom récupère bien l'id des availablesRooms
+        
         $randomRoom = $faker->randomElement($availableRooms);
         
         $status= ['Non Payé', 'Payé'];
