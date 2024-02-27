@@ -54,6 +54,9 @@
 							</p>
 							<p>Amount :
 								{{ booking.amount }}</p>
+							<p>Etat : 
+								{{ booking.state == 'true' ? 'Booking' : 'Pré-Booking' }}
+							</p>
 							<p>Status :
 								{{ booking.status }}</p>
 						</div>
