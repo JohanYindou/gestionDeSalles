@@ -1,41 +1,51 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil de
-	{{ app.user.firstname }}
+	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-{# {{ dump(app.user.bookings) }} #}
+	<div
+class="container mt-4 fs-4">
+
+		{# {{ dump(user.bookings) }} #}
 
 		<div class="card p-3">
-			<div class="card-header">
-				<h5>Informations sur le profil</h5>
-				<img src="{{ app.user.picture }}" alt="Photo de profil" class="img-fluid rounded-pill">
-				<p>Nom Complet :
-					{{ app.user.lastname }}
-					{{ app.user.firstname }}</p>
-				<p>Email :
-					{{ app.user.email }}</p>
-				<p>Adresse :
-					{{ app.user.address }}</p>
-				<p>Téléphone :
-					{{ app.user.phone }}</p>
 
-				<!-- Ajouter les booking du compte au profil  -->
-				<div class="col">
-					<p>Mes Bookings</p>
-					{% for booking in app.user.bookings %}
-					</p>
-					<div class="card p-3">
-						<p>Booking n°{{ booking.id }}</p>
-					</div>
-				{% endfor %}
+			<div class="d-flex flex-column  align-items-center">
+				<h5 class="card-title fs-2">Informations sur le profil</h5>
+				<img src="{{ user.picture }}" alt="Photo de profil" class="img-fluid rounded-pill me-2" style="width: 200px; height: 200px;">
 			</div>
+			<div class="card-body">
+				<p>Nom Complet :
+					{{ user.lastname }}
+					{{ user.firstname }}</p>
+				<p>Email :
+					{{ user.email }}</p>
+				<p>Adresse :
+					{{ user.address }}</p>
+				<p>Téléphone :
+					{{ user.phone }}</p>
 
+				<!-- Ajouter un lien vers la page d'édition -->
+				<a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
+				
+				<!-- Ajouter les booking du compte au profil  -->
+				<div class="col mt-3">
+					<p>Mes Bookings</p>
 
-			<!-- Ajouter un lien vers la page d'édition -->
-			<a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
+					{% for booking in user.bookings %}
+					{# {{ dump(booking.) }} #}
+						<div class="card mb-3 p-3">
+							<p>Booking n°{{ booking.id }}</p>
+							<p>Room n°{{ booking.room_id.id }} : <a href="{{ path('app_room', {'id': booking.room_id.id}) }}" class="fw-bold text-decoration-none text-black ">{{ booking.room_id.name }}</a></p>
+							<p>Amount : {{ booking.amount }}</p>
+							<p>Status : {{ booking.status }}</p>
+							
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+{% endblock %}
