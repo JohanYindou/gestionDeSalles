@@ -126,16 +126,14 @@ class AppFixtures extends Fixture
             array_push($rooms, $room); // Ajouter la chambre au tableau $rooms
         }
 
-        // il faut ajouter un tri pour les chambres qui sont déja utilisées 
-        // Récupérer une chambre aléatoire parmi les chambres disponibles
         $availableRooms = $manager->getRepository(Room::class)->findBy(['status' => 'Disponible']);
 
-        // Vérifier que available Room n'est pas vide avant de procéder à l'affect
-        // Vérifier que randomRoom récupère bien l'id des availablesRooms
-        
-        $randomRoom = $faker->randomElement($availableRooms);
-        
-        $status= ['Non Payé', 'Payé'];
+        $availableRoomIds = [];
+        foreach ($availableRooms as $room) {
+            $availableRoomIds[] = $room->getId();
+        }
+
+        $status = ['Non Payé', 'Payé'];
         // Créer des booking
         foreach ($visitors as $visitor) {
             for ($i = 0; $i < 3; $i++) {
@@ -143,16 +141,16 @@ class AppFixtures extends Fixture
                 $startDate = $faker->dateTimeBetween('now', '+1 month');
                 $endDate = clone $startDate;
                 $endDate->modify("+1 week");
-                
-                
+
+                $randomRoomId = $faker->randomElement($availableRoomIds);
 
                 $booking->setStartDate($startDate)
                     ->setEndDate($endDate)
                     ->setAmount($faker->numberBetween(150, 1500))
                     ->setState($faker->boolean)
                     // Si le state est à false, le booking est non payé sinon il aléatoire entre payé et non payé 
-                    ->setStatus($booking->isState() ? $status[array_rand($status)] : 'Non Payé')
-                    ->setRoom_id($randomRoom)
+                    ->setStatus($booking->isState() ? 'Payé' : 'Non Payé')
+                    ->setRoom_Id($randomRoomId)
                     ->setUserId($visitor)
                     ->setCreatedAt($faker->dateTimeBetween('now', '+1 month'));
 

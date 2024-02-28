@@ -1,1 +1,53 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content %}
+    <div>
+        <h3 class="my-5 fw-bold">Dashboard</h3>
+
+        <div class="card mb-4">
+            <div class="card-header bg-danger">
+                <h2 class="card-title">Upcoming Reservations</h2>
+            </div>
+			{{ dump(bookings) }}
+
+            {% if bookings is not empty %}
+                {% for booking in bookings %}
+                    <a href="{{ path('admin', { 'crudAction': 'detail', 'crudControllerFqcn': 'App\\Controller\\Admin\\BookingCrudController', 'entityId': booking.id } ) }}" class="text-dark">
+                        <div class="card-body d-flex flex-column border-top">
+                            <h3 class="fw-bold">
+                                Pré-réservation N°{{ booking.id }}
+                                {% if booking.state == true %}
+                                    <span class="badge bg-primary text-dark">
+                                        Accepté
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger text-dark">
+                                        Non accepté
+                                    </span>
+                                {% endif %}
+                            </h3>
+
+                            <div class="d-flex flex-column">
+                                <p class="card-text mb-0 fs-5">Date de début : {{ booking.getStartDate()|date('Y-m-d H:i') }}</p>
+                                <a href=""></a>
+								<p class="card-text fs-5">
+                                     Room: <br> {#strong>{{ booking.RoomId.id }} </strong><br> #}
+                                </p>
+
+                                <p class="card-text fs-5">
+                                    <strong>User:</strong><br>
+									<a href="{{ path('admin', { 'crudAction': 'detail', 'crudControllerFqcn': 'App\\Controller\\Admin\\UserCrudController', 'entityId': booking.UserId.id } ) }}">
+										{{ booking.UserId.id }}
+									</a>
+                                    
+                                </p>
+                            </div>
+                        </div> 
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>No upcoming reservations.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
