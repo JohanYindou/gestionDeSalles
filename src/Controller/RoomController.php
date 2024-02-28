@@ -76,7 +76,7 @@ class RoomController extends AbstractController
                 $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
                 $booking->setAmount($room->getPrice()); // Définir le prix de la salle
                 $booking->setState(false); // Définir l'état de la reservation
-                $booking->setStatus('Non payé'); // Définir le statut à "Non payé"
+                $booking->setStatus('Payé'); // Définir le statut à "Payé"
                 $booking->setStartDate($booking->getStartDate()); // Récupérer la date de début du formulaire
                 $booking->setEndDate($booking->getEndDate()); // Récupérer la date de fin du formulaire $booking->setEndDate($booking->getStartDate()); // Récupérer la date de fin du formulaire
                 $booking->setCreatedAt(new \DateTime()); // Définir la date de création à maintenant
