@@ -28,6 +28,7 @@ class RoomController extends AbstractController
 
         // Vérifier si l'utilisateur est authentifié
         if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
             throw $this->createNotFoundException('Utilisateur non connecté');
         }
 
@@ -73,7 +74,7 @@ class RoomController extends AbstractController
                 // Date de fin identique ou antérieure à la date de début
                 $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            } else {
+            } 
                 // Date de fin valide
                 $booking->setRoom_id($room); // Définir la salle pour la réservation
                 $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
@@ -88,7 +89,7 @@ class RoomController extends AbstractController
                 // Affichage du message de réservation effectuée
                 $this->addFlash('success', 'Réservation effectuée avec succès !');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            }
+            
         }
 
 
