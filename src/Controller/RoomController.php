@@ -6,6 +6,7 @@ use App\Entity\Booking;
 use App\Form\BookingType;
 use App\Repository\RoomRepository;
 use App\Repository\FeaturesRepository;
+use App\Repository\FeaturesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,7 @@ class RoomController extends AbstractController
 
         // Vérifier si l'utilisateur est authentifié
         if (!$currentUser) {
+            return $this->redirectToRoute('app_login');
             throw $this->createNotFoundException('Utilisateur non connecté');
         }
 
@@ -55,7 +57,7 @@ class RoomController extends AbstractController
             if ($room->getStatus() != 'Disponible') {
                 $this->addFlash('error', 'La salle n\'est pas disponible!');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            }
+            }  
 
             // Vérifier si la date de fin est après la date de début
             $interval = date_diff($booking->getStartDate(), $booking->getEndDate());
@@ -103,6 +105,8 @@ class RoomController extends AbstractController
         RoomRepository $roomRepository,
         PaginatorInterface $paginator,
         FeaturesRepository $featureRepository
+        PaginatorInterface $paginator,
+        FeaturesRepository $featureRepository
     ): Response {
 
         // Récupération des critères de filtrage
@@ -134,12 +138,18 @@ class RoomController extends AbstractController
 
         $rooms = $paginator->paginate(
             $queryBuilder->getQuery(),
+            $queryBuilder->getQuery(),
             $request->query->getInt('page', 1),
             9
         );
 
         return $this->render('room/rooms.html.twig', [
             'rooms' => $rooms,
+            'priceMin' => $priceMin,
+            'priceMax' => $priceMax,
+            'capacityMin' => $capacityMin,
+            'capacityMax' => $capacityMax,
+            'status' => $status,
             'priceMin' => $priceMin,
             'priceMax' => $priceMax,
             'capacityMin' => $capacityMin,

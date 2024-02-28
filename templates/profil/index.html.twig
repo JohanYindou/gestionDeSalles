@@ -1,41 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Profil de
-	{{ app.user.firstname }}
+	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-4">
-{{ dump(app.user.bookings) }}
+	<div
+		class="container mt-4 mb-4 fs-4">
+			{# {{ dump(app.flashes()) }} #}
+			{% for success in app.flashes('success') %}
+				<div class="alert alert-success" role="alert">
+					{{ success | raw }}
+				</div>
+			{% endfor %}
+
+			{% for error in app.flashes('error') %}
+				<div class="alert alert-danger" role="alert">
+					{{ error | raw }}
+				</div>
+			{% endfor %}
 
 		<div class="card p-3">
-			<div class="card-header">
-				<h5>Informations sur le profil</h5>
-				<img src="{{ app.user.picture }}" alt="Photo de profil" class="img-fluid rounded-pill">
-				<p>Nom Complet :
-					{{ app.user.lastname }}
-					{{ app.user.firstname }}</p>
-				<p>Email :
-					{{ app.user.email }}</p>
-				<p>Adresse :
-					{{ app.user.address }}</p>
-				<p>Téléphone :
-					{{ app.user.phone }}</p>
-
-				{# <!-- Ajouter les booking du compte au profil  -->
-				<div class="col">
-					<p>Mes Bookings</p>
-					{% for booking in app.user.bookings %}
-					</p>
-					<div class="card p-3">
-						<p>Booking n°{{ booking.id }}</p>
-					</div>
-				{% endfor %} #}
+			<div class="d-flex flex-column  align-items-center">
+				<h5 class="card-title fs-2">Informations sur le profil</h5>
+				<img src="{{ user.picture }}" alt="Photo de profil" class="img-fluid rounded-pill me-2" style="width: 200px; height: 200px;">
 			</div>
+			<div class="card-body">
+				<p>Nom Complet :
+					{{ user.lastname }}
+					{{ user.firstname }}</p>
+				<p>Email :
+					{{ user.email }}</p>
+				<p>Adresse :
+					{{ user.address }}</p>
+				<p>Téléphone :
+					{{ user.phone }}</p>
 
+				<!-- Ajouter un lien vers la page d'édition -->
+				<a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
 
-			<!-- Ajouter un lien vers la page d'édition -->
-			<a href="{{ path('profil/edit') }}" class="btn btn-primary">Éditer profil</a>
+				<!-- Ajouter les booking du compte au profil  -->
+				<div class="col mt-3">
+					<p>Mes Bookings</p>
+					{% for booking in user.bookings %}
+						<div class="card mb-3 p-3">
+							<p>Booking n°{{ booking.id }}</p>
+							<p>Room n°{{ booking.room_id.id }}
+								:
+								<a href="{{ path('app_room', {'id': booking.room_id.id}) }}" class="fw-bold text-decoration-none text-black ">{{ booking.room_id.name }}</a>
+							</p>
+							<p>Durée de reservation : 
+								{{ booking.startDate|date('d/m/Y H:i' ) }} - {{ booking.endDate|date('d/m/Y H:i') }}
+							</p>
+							<p>Amount :
+								{{ booking.amount }}</p>
+							<p>Etat : 
+								{{ booking.state == 'true' ? 'Booking' : 'Pré-Booking' }}
+							</p>
+							<p>Status :
+								{{ booking.status }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
 		</div>
 	</div>
-</div>{% endblock %}
+
+<script>
+	// Attendre 3 secondes puis masquer le message flash
+	setTimeout(function () {
+		document.querySelectorAll('.alert').forEach(function (alert) {
+			alert.style.display = 'none';
+		});
+	}, 3000);
+</script>
+{% endblock %}

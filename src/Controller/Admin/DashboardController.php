@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Room;
+use App\Entity\Room;
 use App\Entity\User;
+use App\Entity\Booking;
 use App\Entity\Booking;
 use App\Entity\Features;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +17,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use App\Controller\Admin\BookingCrudController;
+use Symfony\Component\Routing\Annotation\Route;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -60,8 +76,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Features', 'fas fa-list', Features::class);
         yield MenuItem::linkToCrud('Salles', 'fas fa-home', Room::class);
-        yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar', Booking::class)
-            ->setController(BookingCrudController::class);
+        yield MenuItem::linkToCrud('Réservations', 'fas fa-calendar', Booking::class);
 
         yield MenuItem::linkToRoute('Retour', 'fa fa-sign-out', 'app_home');
         yield MenuItem::linkToLogout('Déconnexion', 'fa fa-sign-out');

@@ -27,6 +27,7 @@ class RegistrationController extends AbstractController
 
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -61,9 +62,10 @@ class RegistrationController extends AbstractController
             // Authenticate user automatically after registration
             $this->addFlash('success', 'Your account has been created. Please check your email for verification.');
 
-            return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_login');
         }
 
+        return $this->render('registration/register.html.twig', [
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
@@ -75,6 +77,7 @@ class RegistrationController extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         // Validate email confirmation link, sets User::isVerified=true and persists
+        // Validate email confirmation link, sets User::isVerified=true and persists
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
@@ -83,6 +86,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
+        // Redirect to the appropriate page after email verification
         // Redirect to the appropriate page after email verification
         $this->addFlash('success', 'Your email address has been verified.');
 
