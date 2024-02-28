@@ -48,6 +48,13 @@ Enfin, il faut charger les fixtures générées par Faker dans la base de donné
 symfony console doctrine:fixtures:load
 ```
 
+On peut faire la commande consume messenger pour envoyer le mail de confirmation de l'email.
+On peut vérifier le message dans la boite de réception mailtrap.
+
+``` bash
+symfony console messenger:consume async --vv
+```
+
 ## Fonctionalitées
 
 Depuis la page Home vous pouvez accéder aux fonctionnalitées suivantes :
