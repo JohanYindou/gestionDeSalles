@@ -27,9 +27,26 @@
                 <td>{{ booking.endDate ? booking.endDate|date('Y-m-d') : '' }}</td>
                 <td>{{ booking.amount }}</td>
                 <td>{{ booking.status }}</td>
-                <td>{{ booking.state ? 'Yes' : 'No' }}</td>
+                <td>{{ booking.state ? 'True' : 'False' }}</td>
                 <td>{{ booking.createdAt ? booking.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ booking.updatedAt ? booking.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                 <td>
+                    {% for flash in app.flashes('success') %} 
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ message }} 
+                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                           {% endfor %} 
+                           
+                           {% for flash in app.flashes('warning') %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert"> 
+                    {{ message }} 
+                    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    
+                    </td>
                 <td>
                     <a href="{{ path('app_booking_show', {'id': booking.id}) }}">show</a>
                     <a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
