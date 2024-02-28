@@ -70,11 +70,7 @@ class RoomController extends AbstractController
                 // Date de fin dans un mois antérieur
                 $this->addFlash('error', 'La date de fin doit être dans le mois en cours ou un mois ultérieur.');
                 return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            } elseif ($interval->y == 0 && $interval->m == 0 && $interval->d <= 0) {
-                // Date de fin identique ou antérieure à la date de début
-                $this->addFlash('error', 'La date de fin doit être postérieure à la date de début.');
-                return $this->redirectToRoute('app_room', ['id' => $room->getId()]);
-            } 
+            }
                 // Date de fin valide
                 $booking->setRoom_id($room); // Définir la salle pour la réservation
                 $booking->setUserId($currentUser); // Définir l'utilisateur pour la réservation
